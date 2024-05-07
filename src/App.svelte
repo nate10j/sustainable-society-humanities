@@ -29,9 +29,6 @@
 
     renderer.render(scene, camera);
   }
+
   animate();
 </script>
-
-<h1>
-  Hello! this site is for Nathan, Lucas, Chun Yin, Joshua humanities project!
-</h1>
