@@ -1,5 +1,6 @@
 <script lang="ts">
-  import img from "./assets/drake pie.png";
+  import DialogueBox, {sayDialogue} from "./lib/DialogueBox.svelte";
+  import { characters } from "./lib/characters";
   import * as THREE from "three";
 
   const scene = new THREE.Scene();
@@ -31,4 +32,17 @@
   }
 
   animate();
+
+  sayDialogue(characters.Nathan, "Hi this is test and wow bom bom bom poopy dooopy mmoopy");
 </script>
+
+<div class="container">
+  <DialogueBox />
+</div>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+</style>

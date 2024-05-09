@@ -10,8 +10,3 @@ h1 {
 body {
   overflow: hidden;
 }
-
-canvas {
-  display: block;
-  /* fix necessary to remove space at bottom of canvas */
-}
