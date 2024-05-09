@@ -1,6 +1,6 @@
 export enum characters {
     Nathan = "Nathan",
     Joshua = "Joshua",
-    ChunYin = "ChunYin",
-    Lucas = "Lucas",
+    ChunYin = "Chun Yin",
+    Lucas = "Lucas"
 }

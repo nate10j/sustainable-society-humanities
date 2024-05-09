@@ -1,6 +1,6 @@
 <script lang="ts">
-  import DialogueBox, {sayDialogue} from "./lib/DialogueBox.svelte";
-  import { characters } from "./lib/characters";
+  import DialogueBox, { sayDialogue } from "./lib/Dialogue.svelte";
+  import { characters } from "./lib";
   import * as THREE from "three";
 
   const scene = new THREE.Scene();
@@ -33,7 +33,10 @@
 
   animate();
 
-  sayDialogue(characters.Nathan, "Hi this is test and wow bom bom bom poopy dooopy mmoopy");
+  sayDialogue(
+    characters.Nathan,
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi odit quidem placeat doloremque eligendi inventore eius, necessitatibus exercitationem non enim repellendus illum explicabo ut alias suscipit quos ipsam totam dolorem.",
+  );
 </script>
 
 <div class="container">
