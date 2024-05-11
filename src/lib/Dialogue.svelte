@@ -34,8 +34,8 @@
 
     function sayContent(character: characters, content: string) {
         dialogueCharacterHeading.textContent = character;
-        contentComplete = false;
         dialogueText = content;
+        contentComplete = false;
 
         dialogueContentElement.textContent = "";
 
@@ -56,13 +56,14 @@
         wordInterval = setInterval(showNextWord, wordDelay);
     }
 
-    document.addEventListener("keyup", (event) => {
+    document.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             if (contentComplete) {
+                clearInterval(wordInterval);
                 dialogueIndex++;
                 showNextDialogue();
             } else {
-                clearInterval(wordInterval); // Stop the word-by-word display
+                clearInterval(wordInterval);
                 dialogueContentElement.textContent = dialogueText;
                 contentComplete = true;
             }
