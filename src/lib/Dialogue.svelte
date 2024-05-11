@@ -56,7 +56,7 @@
         wordInterval = setInterval(showNextWord, wordDelay);
     }
 
-    document.addEventListener("keypress", (event) => {
+    document.addEventListener("keyup", (event) => {
         if (event.key === "Enter") {
             if (contentComplete) {
                 dialogueIndex++;
