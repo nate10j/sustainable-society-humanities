@@ -2,29 +2,52 @@
     import { characters } from ".";
     import { dialogueVisible } from "./store";
 
-    let textElement: HTMLParagraphElement;
-    let characterText: string;
-    let dialogueComplete: boolean = false;
+    let dialogueCharacter: string = "";
+    let dialogueContentElement: HTMLParagraphElement;
+    let contentComplete: boolean = false;
 
     let wordInterval: any;
-    let dialogueTextThingyIDONTKNOWSTRING: string;
+    let dialogueText: string;
+    let dialogueIndex = 0;
+    let dialogueList: dialogue[] = [];
 
-    export function sayDialogue(character: characters, dialogue: string) {
+    export type dialogue = {
+        character: characters;
+        content: string;
+    };
+
+    export function playDialogue(dialogue: dialogue[]) {
         dialogueVisible.set(true);
+        dialogueList = dialogue;
+        showNextDialogue();
+    }
 
-        characterText = character;
-        dialogueComplete = false;
-        dialogueTextThingyIDONTKNOWSTRING = dialogue;
+    function showNextDialogue() {
+        if (dialogueIndex < dialogueList.length) {
+            const character = dialogueList[dialogueIndex].character;
+            const content = dialogueList[dialogueIndex].content;
+            sayContent(character, content);
+        } else {
+            dialogueVisible.set(false);
+        }
+    }
+
+    function sayContent(character: characters, content: string) {
+        dialogueCharacter = character;
+        contentComplete = false;
+        dialogueText = content;
+
+        dialogueContentElement.textContent = "";
 
         let wordIndex = 0;
-        const words = dialogue.split(" ");
+        const words = content.split(" ");
 
         function showNextWord() {
             if (wordIndex < words.length) {
-                textElement.textContent += words[wordIndex] + " ";
+                dialogueContentElement.textContent += words[wordIndex] + " ";
                 wordIndex++;
             } else {
-                dialogueComplete = true;
+                contentComplete = true;
             }
         }
 
@@ -35,12 +58,13 @@
 
     document.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
-            if (dialogueComplete) {
-                dialogueVisible.set(false);
+            if (contentComplete) {
+                dialogueIndex++;
+                showNextDialogue();
             } else {
                 clearInterval(wordInterval); // Stop the word-by-word display
-                textElement.textContent = dialogueTextThingyIDONTKNOWSTRING
-                dialogueComplete = true;
+                dialogueContentElement.textContent = dialogueText;
+                contentComplete = true;
             }
         }
     });
@@ -48,8 +72,8 @@
 
 {#if $dialogueVisible}
     <div class="container">
-        <h1>{characterText}</h1>
-        <p class="text" bind:this={textElement}></p>
+        <h1>{dialogueCharacter}</h1>
+        <p class="text" bind:this={dialogueContentElement}></p>
     </div>
 {/if}
 

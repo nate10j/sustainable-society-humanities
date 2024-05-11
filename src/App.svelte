@@ -1,7 +1,11 @@
 <script lang="ts">
-  import DialogueBox, { sayDialogue } from "./lib/Dialogue.svelte";
+  import DialogueBox, {
+    playDialogue,
+    type dialogue,
+  } from "./lib/Dialogue.svelte";
   import { characters } from "./lib";
   import * as THREE from "three";
+  import { onMount } from "svelte";
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -33,10 +37,23 @@
 
   animate();
 
-  sayDialogue(
-    characters.Nathan,
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi odit quidem placeat doloremque eligendi inventore eius, necessitatibus exercitationem non enim repellendus illum explicabo ut alias suscipit quos ipsam totam dolorem.",
-  );
+  onMount(() => {
+    console.log("Hey")
+    playDialogue([
+      {
+        character: characters.Nathan,
+        content:
+          "Hello ladies and gentlemen! Hello ladies and gentlemen! Hello ladies and gentlemen!",
+      },
+      {
+        character: characters.Nathan,
+        content: "Our names are... Lets start with me, my name is Nathan!",
+      },
+      { character: characters.Lucas, content: "And my name is lucas" },
+      { character: characters.ChunYin, content: "And my name is ChunYin" },
+      { character: characters.Joshua, content: "I am Joshua" },
+    ]);
+  });
 </script>
 
 <div class="container">
