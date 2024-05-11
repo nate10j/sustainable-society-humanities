@@ -57,6 +57,7 @@
     }
 
     document.addEventListener("keydown", (event) => {
+        if (event.repeat) return;
         if (event.key === "Enter") {
             if (contentComplete) {
                 clearInterval(wordInterval);
