@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
     import { characters } from ".";
-    import { dialogueVisible } from "./store";
 
-    let dialogueCharacter: string = "";
+    let dialogueCharacterHeading: HTMLHeadingElement;
     let dialogueContentElement: HTMLParagraphElement;
     let contentComplete: boolean = false;
+    let dialogueContainerElement: HTMLDivElement;
 
     let wordInterval: any;
     let dialogueText: string;
@@ -17,7 +17,7 @@
     };
 
     export function playDialogue(dialogue: dialogue[]) {
-        dialogueVisible.set(true);
+        showDialogueContainer();
         dialogueList = dialogue;
         showNextDialogue();
     }
@@ -28,12 +28,12 @@
             const content = dialogueList[dialogueIndex].content;
             sayContent(character, content);
         } else {
-            dialogueVisible.set(false);
+            hideDialogueContainer();
         }
     }
 
     function sayContent(character: characters, content: string) {
-        dialogueCharacter = character;
+        dialogueCharacterHeading.textContent = character;
         contentComplete = false;
         dialogueText = content;
 
@@ -68,14 +68,19 @@
             }
         }
     });
+
+    function showDialogueContainer() {
+        dialogueContainerElement.style.display = "block";
+    }
+    function hideDialogueContainer() {
+        dialogueContainerElement.style.display = "none";
+    }
 </script>
 
-{#if $dialogueVisible}
-    <div class="container">
-        <h1>{dialogueCharacter}</h1>
+<div class="container" bind:this={dialogueContainerElement}>
+        <h1 bind:this={dialogueCharacterHeading}></h1>
         <p class="text" bind:this={dialogueContentElement}></p>
-    </div>
-{/if}
+</div>
 
 <style>
     .container {
