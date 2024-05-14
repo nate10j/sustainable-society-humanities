@@ -38,7 +38,7 @@
   animate();
 
   onMount(() => {
-    console.log("Hey")
+    console.log("Hey");
     playDialogue([
       {
         character: characters.Nathan,

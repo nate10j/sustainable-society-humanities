@@ -1,4 +1,11 @@
 <script lang="ts" context="module">
+    import ChunYinImg from "../assets/CHUN YIN.jpg";
+    import NathanImg from "../assets/NATHAN.jpg";
+    import LucasImg from "../assets/LUCAS.jpg";
+    import JoshuaImg from "../assets/JOSHUA.jpg";
+
+    let pfpImage: HTMLImageElement;
+
     import { characters } from ".";
 
     let dialogueCharacterHeading: HTMLHeadingElement;
@@ -33,7 +40,24 @@
     }
 
     function sayContent(character: characters, content: string) {
-        dialogueCharacterHeading.textContent = character;
+        switch (character) {
+            case characters.Nathan:
+                dialogueCharacterHeading.textContent = "Nathan";
+                pfpImage.src = NathanImg;
+                break;
+            case characters.ChunYin:
+                dialogueCharacterHeading.textContent = "Chun Yin";
+                pfpImage.src = ChunYinImg;
+                break;
+            case characters.Lucas:
+                dialogueCharacterHeading.textContent = "Lucas";
+                pfpImage.src = LucasImg;
+                break;
+            case characters.Joshua:
+                dialogueCharacterHeading.textContent = "Joshua";
+                pfpImage.src = JoshuaImg;
+                break;
+        }
         dialogueText = content;
         contentComplete = false;
 
@@ -80,8 +104,13 @@
 </script>
 
 <div class="container" bind:this={dialogueContainerElement}>
-        <h1 bind:this={dialogueCharacterHeading}></h1>
-        <p class="text" bind:this={dialogueContentElement}></p>
+    <div class="dialoguebox">
+        <img bind:this={pfpImage} alt="pfp" class="pfp" />
+        <div class="textDialogue">
+            <h1 bind:this={dialogueCharacterHeading}>John Doe</h1>
+            <p class="text" bind:this={dialogueContentElement}></p>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -92,5 +121,21 @@
         width: 50%;
         max-height: 150px;
         padding: 16px;
+    }
+
+    .dialoguebox {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .textDialogue {
+        margin-left: 16px;
+    }
+
+    .pfp {
+        width: auto;
+        height: 100px;
     }
 </style>
