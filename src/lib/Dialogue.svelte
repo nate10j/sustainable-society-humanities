@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
-    import ChunYinImg from "../assets/CHUN YIN.jpg";
-    import NathanImg from "../assets/NATHAN.jpg";
-    import LucasImg from "../assets/LUCAS.jpg";
-    import JoshuaImg from "../assets/JOSHUA.jpg";
+    import ChunYinImg from "../assets/CHUN YIN.webp";
+    import NathanImg from "../assets/NATHAN.webp";
+    import LucasImg from "../assets/LUCAS.webp";
+    import JoshuaImg from "../assets/JOSHUA.webp";
 
     let pfpImage: HTMLImageElement;
 
