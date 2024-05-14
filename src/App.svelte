@@ -7,6 +7,8 @@
   import * as THREE from "three";
   import { onMount } from "svelte";
 
+  import {loadImages} from "./lib"
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -38,6 +40,13 @@
   animate();
 
   onMount(() => {
+    const imageURLLoad: any = ["../assets/CHUN YIN.jpg",
+        "../assets/JOSHUA.jpg",
+        "../assets/NATHAN.jpg",
+        "../assets/LUCAS.jpg"
+    ]; // array for the images
+    loadImages(imageURLLoad);
+
     console.log("Hey");
     playDialogue([
       {
