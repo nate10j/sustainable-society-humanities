@@ -1,10 +1,13 @@
 <script lang="ts">
-  import DialogueBox, {
-    playDialogue,
-  } from "./lib/Dialogue.svelte";
-  import { characters } from "./lib";
+  import DialogueBox, { playDialogue } from "./lib/Dialogue.svelte";
+  import { assetLoaded, characters } from "./lib";
   import * as THREE from "three";
-  import { onMount } from "svelte";
+
+  import { initialize } from "./lib";
+
+  let loadingScreen: HTMLDivElement;
+  let container: HTMLDivElement;
+  let progressBar: HTMLDivElement;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -36,8 +39,10 @@
 
   animate();
 
-  onMount(() => {
-    console.log("Hey");
+  initialize(() => {
+    loadingScreen.style.display = "none";
+    container.style.display = "flex";
+
     playDialogue([
       {
         character: characters.Nathan,
@@ -53,15 +58,62 @@
       { character: characters.Joshua, content: "I am Joshua" },
     ]);
   });
+
+  assetLoaded((loadedAssets: number, totalAssets: number) => {
+    progressBar.style.width = `${(loadedAssets / totalAssets) * 100}%`;
+  });
 </script>
 
-<div class="container">
+<div class="loading-screen" bind:this={loadingScreen}>
+  <h1 class="loading-text">LOADING...</h1>
+  <div class="progress-container">
+    <div id="progress-bar" class="progress-bar" bind:this={progressBar}></div>
+  </div>
+</div>
+
+<div class="container" bind:this={container}>
   <DialogueBox />
 </div>
 
 <style>
   .container {
-    display: flex;
+    display: none;
     justify-content: center;
+  }
+
+  .loading-screen {
+    display: flex; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff;
+    color: #000;
+  }
+
+  .progress-container {
+    width: 300px;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #4caf50;
+    animation: progress-animation 2s infinite linear;
+  }
+
+  @keyframes progress-animation {
+    0% {
+      width: 0%;
+    }
+    50% {
+      width: 100%;
+    }
+    100% {
+      width: 0%;
+    }
   }
 </style>
