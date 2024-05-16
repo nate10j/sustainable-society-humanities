@@ -1,7 +1,6 @@
 <script lang="ts">
   import DialogueBox, {
     playDialogue,
-    type dialogue,
   } from "./lib/Dialogue.svelte";
   import { characters } from "./lib";
   import * as THREE from "three";

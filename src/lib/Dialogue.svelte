@@ -4,9 +4,13 @@
     import LucasImg from "../assets/LUCAS.webp";
     import JoshuaImg from "../assets/JOSHUA.webp";
 
-    let pfpImage: HTMLImageElement;
-
     import { characters } from ".";
+    import { assetLoaded, initializeAssets } from "./LoadAssets";
+
+    let lucasImgElement: HTMLImageElement;
+    let nathanImgElement: HTMLImageElement;
+    let joshuaImgElement: HTMLImageElement;
+    let chunyinImgElement: HTMLImageElement;
 
     let dialogueCharacterHeading: HTMLHeadingElement;
     let dialogueContentElement: HTMLParagraphElement;
@@ -43,19 +47,32 @@
         switch (character) {
             case characters.Nathan:
                 dialogueCharacterHeading.textContent = "Nathan";
-                pfpImage.src = NathanImg;
+
+                lucasImgElement.style.display = "none";
+                joshuaImgElement.style.display = "none";
+                chunyinImgElement.style.display = "none";
+                nathanImgElement.style.display = "block";
                 break;
             case characters.ChunYin:
                 dialogueCharacterHeading.textContent = "Chun Yin";
-                pfpImage.src = ChunYinImg;
+                lucasImgElement.style.display = "none";
+                joshuaImgElement.style.display = "none";
+                chunyinImgElement.style.display = "block";
+                nathanImgElement.style.display = "none";
                 break;
             case characters.Lucas:
                 dialogueCharacterHeading.textContent = "Lucas";
-                pfpImage.src = LucasImg;
+                lucasImgElement.style.display = "block";
+                joshuaImgElement.style.display = "none";
+                chunyinImgElement.style.display = "none";
+                nathanImgElement.style.display = "none";
                 break;
             case characters.Joshua:
                 dialogueCharacterHeading.textContent = "Joshua";
-                pfpImage.src = JoshuaImg;
+                lucasImgElement.style.display = "none";
+                joshuaImgElement.style.display = "block";
+                chunyinImgElement.style.display = "none";
+                nathanImgElement.style.display = "none";
                 break;
         }
         dialogueText = content;
@@ -105,7 +122,11 @@
 
 <div class="container" bind:this={dialogueContainerElement}>
     <div class="dialoguebox">
-        <img bind:this={pfpImage} alt="pfp" class="pfp" />
+        <img src={NathanImg} bind:this={nathanImgElement} alt="nathan" class="pfp" use:initializeAssets on:load={assetLoaded} />
+        <img src={LucasImg} bind:this={lucasImgElement} alt="lucas" class="pfp" use:initializeAssets on:load={assetLoaded} />
+        <img src={JoshuaImg} bind:this={joshuaImgElement} alt="joshua" class="pfp" use:initializeAssets on:load={assetLoaded} />
+        <img src={ChunYinImg} bind:this={chunyinImgElement} alt="chun yin" class="pfp" use:initializeAssets on:load={assetLoaded} />
+
         <div class="textDialogue">
             <h1 bind:this={dialogueCharacterHeading}>John Doe</h1>
             <p class="text" bind:this={dialogueContentElement}></p>
