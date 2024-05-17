@@ -40,6 +40,8 @@
   animate();
 
   initialize(() => {
+    clearInterval(loadingBarInterval);
+
     loadingScreen.style.display = "none";
     container.style.display = "flex";
 
@@ -59,8 +61,20 @@
     ]);
   });
 
+  let loadingBarWidth = 0;
+  let loadingBarCap = 0;
+  const loadingBarInterval = setInterval(() => {
+    console.log("INTERVAL!!!")
+    if (loadingBarWidth >= loadingBarCap) {
+      return;
+    }
+    loadingBarWidth++;
+    progressBar.style.width = `${loadingBarWidth}%`;
+  }, 10);
+
   assetLoaded((loadedAssets: number, totalAssets: number) => {
-    progressBar.style.width = `${(loadedAssets / totalAssets) * 100}%`;
+    loadingBarCap = Math.round(loadedAssets / totalAssets * 100);
+    console.log("an asset loaded")
   });
 </script>
 
