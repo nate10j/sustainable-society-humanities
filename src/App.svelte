@@ -94,7 +94,6 @@
     width: 300px;
     height: 20px;
     background-color: #ddd;
-    border-radius: 10px;
     overflow: hidden;
   }
 
