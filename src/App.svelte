@@ -102,18 +102,5 @@
     width: 0%;
     height: 100%;
     background-color: #4caf50;
-    animation: progress-animation 2s infinite linear;
-  }
-
-  @keyframes progress-animation {
-    0% {
-      width: 0%;
-    }
-    50% {
-      width: 100%;
-    }
-    100% {
-      width: 0%;
-    }
   }
 </style>
