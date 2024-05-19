@@ -54,7 +54,7 @@
       1000,
     );
 
-    scene.background = new THREE.Color("#001340");
+    scene.background = new THREE.Color("#011226");
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -63,23 +63,18 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.update();
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    //scene.add(cube);
-
+    pastHumModel.position.set(9, -5, 14);
+    pastHumModel.scale.set(5, 5, 5);
     scene.add(pastHumModel);
 
-    let light = new THREE.DirectionalLight("white", 3);
-    scene.add(light);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
 
     camera.position.z = 5;
+    controls.update();
 
     function animate() {
       requestAnimationFrame(animate);
-
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
 
       renderer.render(scene, camera);
     }
