@@ -13,12 +13,7 @@
      */
     "allowJs": true,
     "checkJs": true,
-    "isolatedModules": true,
-    "paths": {
-      "/*": [
-        "./*",
-      ]
-    }
+    "isolatedModules": true
   },
   "include": [
     "src/**/*.ts",
