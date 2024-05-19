@@ -65,8 +65,8 @@
     let light = new THREE.DirectionalLight("white", 3);
     scene.add(light);
 
-    mtlLoader.setPath("public/models/hum/");
-    objLoader.setPath("public/models/hum/");
+    mtlLoader.setPath("/models/hum/");
+    objLoader.setPath("/models/hum/");
     mtlLoader.load(
       "hum.mtl",
       (materials: any) => {
