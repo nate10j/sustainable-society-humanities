@@ -1,42 +1,49 @@
 <script lang="ts">
   import DialogueBox, { playDialogue } from "./lib/Dialogue.svelte";
-  import { assetLoaded, characters } from "./lib";
-  import { model } from "./lib/model";
+  import { characters } from "./lib";
   import * as THREE from "three";
   import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-  import { TextureLoader } from "three/src/loaders/TextureLoader.js";
   import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-  import { initialize } from "./lib";
+  import { onMount } from "svelte";
 
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
 
   const objLoader = new OBJLoader();
-  const textureLoader = new TextureLoader();
   const mtlLoader = new MTLLoader();
 
-  //let productHumanities = model("./assets/models/hum/hum.obj");
+  let pastHumModel: any;
 
-  function applyTexturesToModel(model: any) {
-    model.traverse((child: any) => {
-      if (child.isMesh) {
-        for (let i = 1; i <= 2; i++) {
-          // Assuming you have 2 textures
-          const textureName = `textures/HUM present fix-0000${i}-texture.jpg`;
-          textureLoader.load(textureName, (texture: any) => {
-            child.material.map = texture;
-            child.material.needsUpdate = true;
-          });
-        }
-      }
-    });
-  }
+  mtlLoader.setPath("/sustainable-society-humanities/models/hum/");
+  objLoader.setPath("/sustainable-society-humanities/models/hum/");
+  mtlLoader.load(
+    "hum.mtl",
+    (materials: any) => {
+      materials.preload();
+      objLoader.setMaterials(materials);
+      objLoader.load(
+        "hum.obj",
+        (object: any) => {
+          pastHumModel = object;
+          initialize();
+        },
+        (xhr: any) => {
+          progressBar.style.width = `${(xhr.loaded / xhr.total) * 100}%`;
+        },
+        (error: any) => {
+          console.error("Error loading OBJ file:", error);
+        },
+      );
+    },
+    undefined,
+    (error: any) => {
+      console.error("Error loading MTL file:", error);
+    },
+  );
 
-  initialize(() => {
-    clearInterval(loadingBarInterval);
-
+  function initialize() {
     loadingScreen.style.display = "none";
     container.style.display = "flex";
 
@@ -62,34 +69,10 @@
     const cube = new THREE.Mesh(geometry, material);
     //scene.add(cube);
 
+    scene.add(pastHumModel);
+
     let light = new THREE.DirectionalLight("white", 3);
     scene.add(light);
-
-    mtlLoader.setPath("/sustainable-society-humanities/models/hum/");
-    objLoader.setPath("/sustainable-society-humanities/models/hum/");
-    mtlLoader.load(
-      "hum.mtl",
-      (materials: any) => {
-        materials.preload();
-        objLoader.setMaterials(materials);
-        objLoader.load(
-          "hum.obj",
-          (object: any) => {
-            
-            console.log("Loaded object:", object);
-            scene.add(object);
-          },
-          undefined,
-          (error: any) => {
-            console.error("Error loading OBJ file:", error);
-          },
-        );
-      },
-      undefined,
-      (error: any) => {
-        console.error("Error loading MTL file:", error);
-      },
-    );
 
     camera.position.z = 5;
 
@@ -118,23 +101,7 @@
       { character: characters.ChunYin, content: "And my name is ChunYin" },
       { character: characters.Joshua, content: "I am Joshua" },
     ]);
-  });
-
-  let loadingBarWidth = 0;
-  let loadingBarCap = 0;
-  const loadingBarInterval = setInterval(() => {
-    console.log("INTERVAL!!!");
-    if (loadingBarWidth >= loadingBarCap) {
-      return;
-    }
-    loadingBarWidth++;
-    progressBar.style.width = `${loadingBarWidth}%`;
-  }, 10);
-
-  assetLoaded((loadedAssets: number, totalAssets: number) => {
-    loadingBarCap = Math.round((loadedAssets / totalAssets) * 100);
-    console.log("an asset loaded");
-  });
+  }
 </script>
 
 <div class="loading-screen" bind:this={loadingScreen}>

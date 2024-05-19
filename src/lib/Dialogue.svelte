@@ -4,8 +4,7 @@
     import LucasImg from "../assets/LUCAS.webp";
     import JoshuaImg from "../assets/JOSHUA.webp";
 
-    import { characters, initialize } from ".";
-    import { thisAssetLoaded, initializeHTMLAsset } from ".";
+    import { characters } from ".";
 
     let lucasImgElement: HTMLImageElement;
     let nathanImgElement: HTMLImageElement;
@@ -122,10 +121,10 @@
 
 <div class="container" bind:this={dialogueContainerElement}>
     <div class="dialoguebox">
-        <img src={NathanImg} bind:this={nathanImgElement} alt="nathan" class="pfp" use:initializeHTMLAsset on:load={thisAssetLoaded} />
-        <img src={LucasImg} bind:this={lucasImgElement} alt="lucas" class="pfp" use:initializeHTMLAsset on:load={thisAssetLoaded} />
-        <img src={JoshuaImg} bind:this={joshuaImgElement} alt="joshua" class="pfp" use:initializeHTMLAsset on:load={thisAssetLoaded} />
-        <img src={ChunYinImg} bind:this={chunyinImgElement} alt="chun yin" class="pfp" use:initializeHTMLAsset on:load={thisAssetLoaded} />
+        <img src={NathanImg} bind:this={nathanImgElement} alt="nathan" class="pfp" />
+        <img src={LucasImg} bind:this={lucasImgElement} alt="lucas" class="pfp" />
+        <img src={JoshuaImg} bind:this={joshuaImgElement} alt="joshua" class="pfp" />
+        <img src={ChunYinImg} bind:this={chunyinImgElement} alt="chun yin" class="pfp"  />
 
         <div class="textDialogue">
             <h1 bind:this={dialogueCharacterHeading}>John Doe</h1>
