@@ -66,7 +66,7 @@
     scene.add(light);
 
     mtlLoader.setPath("/sustainable-society-humanities/models/hum/");
-    objLoader.setPath("/models/hum/");
+    objLoader.setPath("/sustainable-society-humanities/models/hum/");
     mtlLoader.load(
       "hum.mtl",
       (materials: any) => {
