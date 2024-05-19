@@ -7,7 +7,6 @@
   import { TextureLoader } from "three/src/loaders/TextureLoader.js";
   import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
   import { initialize } from "./lib";
 
   let loadingScreen: HTMLDivElement;
@@ -66,8 +65,8 @@
     let light = new THREE.DirectionalLight("white", 3);
     scene.add(light);
 
-    mtlLoader.setPath("/sustainable-society-humanities/static/models/hum/");
-    objLoader.setPath("/sustainable-society-humanities/static/models/hum/");
+    mtlLoader.setPath("src/assets/models/hum/");
+    objLoader.setPath("src/assets/models/hum/");
     mtlLoader.load(
       "hum.mtl",
       (materials: any) => {
