@@ -8,10 +8,11 @@ export enum characters {
 let totalAssets: number = 0;
 let loadedAssets: number = 0;
 
-export function initializeAssets(node: Node) {
-    // find every image, video, etc and add 1 to totalAssets
-    // GO!
+export function initializeHTMLAsset(node: Node) {
+    totalAssets++;
+}
 
+export function initializeModelAsset() {
     totalAssets++;
 }
 

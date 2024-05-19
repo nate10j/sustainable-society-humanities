@@ -1,7 +1,12 @@
 <script lang="ts">
   import DialogueBox, { playDialogue } from "./lib/Dialogue.svelte";
   import { assetLoaded, characters } from "./lib";
+  import { model } from "./lib/model";
   import * as THREE from "three";
+  import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+  import { TextureLoader } from "three/src/loaders/TextureLoader.js";
+  import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
+  import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
   import { initialize } from "./lib";
 
@@ -9,41 +14,96 @@
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000,
-  );
+  const objLoader = new OBJLoader();
+  const textureLoader = new TextureLoader();
+  const mtlLoader = new MTLLoader();
 
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+  //let productHumanities = model("./assets/models/hum/hum.obj");
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
-
-  camera.position.z = 5;
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-
-    renderer.render(scene, camera);
+  function applyTexturesToModel(model: any) {
+    model.traverse((child: any) => {
+      if (child.isMesh) {
+        for (let i = 1; i <= 2; i++) {
+          // Assuming you have 2 textures
+          const textureName = `textures/HUM present fix-0000${i}-texture.jpg`;
+          textureLoader.load(textureName, (texture: any) => {
+            child.material.map = texture;
+            child.material.needsUpdate = true;
+          });
+        }
+      }
+    });
   }
-
-  animate();
 
   initialize(() => {
     clearInterval(loadingBarInterval);
 
     loadingScreen.style.display = "none";
     container.style.display = "flex";
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
+
+    scene.background = new THREE.Color("#001340");
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.update();
+
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    //scene.add(cube);
+
+    let light = new THREE.DirectionalLight("white", 3);
+    scene.add(light);
+
+    mtlLoader.setPath("/sustainable-society-humanities/static/models/hum/");
+    objLoader.setPath("/sustainable-society-humanities/static/models/hum/");
+    mtlLoader.load(
+      "hum.mtl",
+      (materials: any) => {
+        materials.preload();
+        objLoader.setMaterials(materials);
+        objLoader.load(
+          "hum.obj",
+          (object: any) => {
+            
+            console.log("Loaded object:", object);
+            scene.add(object);
+          },
+          undefined,
+          (error: any) => {
+            console.error("Error loading OBJ file:", error);
+          },
+        );
+      },
+      undefined,
+      (error: any) => {
+        console.error("Error loading MTL file:", error);
+      },
+    );
+
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
 
     playDialogue([
       {
@@ -64,7 +124,7 @@
   let loadingBarWidth = 0;
   let loadingBarCap = 0;
   const loadingBarInterval = setInterval(() => {
-    console.log("INTERVAL!!!")
+    console.log("INTERVAL!!!");
     if (loadingBarWidth >= loadingBarCap) {
       return;
     }
@@ -73,8 +133,8 @@
   }, 10);
 
   assetLoaded((loadedAssets: number, totalAssets: number) => {
-    loadingBarCap = Math.round(loadedAssets / totalAssets * 100);
-    console.log("an asset loaded")
+    loadingBarCap = Math.round((loadedAssets / totalAssets) * 100);
+    console.log("an asset loaded");
   });
 </script>
 
