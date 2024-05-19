@@ -5,7 +5,6 @@
   import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
   import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-  import { onMount } from "svelte";
 
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
