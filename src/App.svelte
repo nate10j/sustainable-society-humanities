@@ -4,28 +4,42 @@
   import * as THREE from "three";
   import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
   import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
+  import { DRACOLoader } from "three/examples/jsm/Addons.js";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+  import { onMount } from "svelte";
 
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
 
+  const dracoLoader = new DRACOLoader();
   const objLoader = new OBJLoader();
   const mtlLoader = new MTLLoader();
 
   let pastHumModel: any;
 
+  dracoLoader.setDecoderPath(
+    "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+  );
+  dracoLoader.setPath("/sustainable-society-humanities/models/hum/");
   mtlLoader.setPath("/sustainable-society-humanities/models/hum/");
   objLoader.setPath("/sustainable-society-humanities/models/hum/");
+
+  dracoLoader.setDecoderConfig({ type: "js" });
+
   mtlLoader.load(
     "hum.mtl",
     (materials: any) => {
       materials.preload();
-      objLoader.setMaterials(materials);
-      objLoader.load(
-        "hum.obj",
-        (object: any) => {
-          pastHumModel = object;
+      dracoLoader.load(
+        "hum.drc",
+        (geometry: any) => {
+          console.log(geometry);
+          const material = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+          });
+          const mesh = new THREE.Mesh(geometry, material);
+          pastHumModel = mesh;
           initialize();
         },
         (xhr: any) => {
@@ -67,7 +81,7 @@
     pastHumModel.scale.set(5, 5, 5);
     scene.add(pastHumModel);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 5);
     scene.add(ambientLight);
 
     camera.position.z = 5;
