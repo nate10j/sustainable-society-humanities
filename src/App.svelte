@@ -2,18 +2,15 @@
   import DialogueBox, { playDialogue } from "./lib/Dialogue.svelte";
   import { characters } from "./lib";
   import * as THREE from "three";
-  import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
   import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
   import { DRACOLoader } from "three/examples/jsm/Addons.js";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-  import { onMount } from "svelte";
 
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
 
   const dracoLoader = new DRACOLoader();
-  const objLoader = new OBJLoader();
   const mtlLoader = new MTLLoader();
 
   let pastHumModel: any;
@@ -23,7 +20,6 @@
   );
   dracoLoader.setPath("/sustainable-society-humanities/models/hum/");
   mtlLoader.setPath("/sustainable-society-humanities/models/hum/");
-  objLoader.setPath("/sustainable-society-humanities/models/hum/");
 
   dracoLoader.setDecoderConfig({ type: "js" });
 
