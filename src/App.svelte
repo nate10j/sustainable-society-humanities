@@ -2,7 +2,7 @@
   import DialogueBox, { playDialogue } from "./lib/Dialogue.svelte";
   import { characters } from "./lib";
   import * as THREE from "three";
-  import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
+  import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
   import { DRACOLoader } from "three/examples/jsm/Addons.js";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
@@ -11,7 +11,7 @@
   let progressBar: HTMLDivElement;
 
   const dracoLoader = new DRACOLoader();
-  const mtlLoader = new MTLLoader();
+  const gltfLoader = new GLTFLoader();
 
   let pastHumModel: any;
 
@@ -19,36 +19,21 @@
     "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
   );
   dracoLoader.setPath("/sustainable-society-humanities/models/hum/");
-  mtlLoader.setPath("/sustainable-society-humanities/models/hum/");
+  gltfLoader.setPath("/sustainable-society-humanities/models/hum/");
 
   dracoLoader.setDecoderConfig({ type: "js" });
 
-  mtlLoader.load(
-    "hum.mtl",
-    (materials: any) => {
-      materials.preload();
-      dracoLoader.load(
-        "hum.drc",
-        (geometry: any) => {
-          console.log(geometry);
-          const material = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-          });
-          const mesh = new THREE.Mesh(geometry, material);
-          pastHumModel = mesh;
-          initialize();
-        },
-        (xhr: any) => {
-          progressBar.style.width = `${(xhr.loaded / xhr.total) * 100}%`;
-        },
-        (error: any) => {
-          console.error("Error loading OBJ file:", error);
-        },
-      );
+  gltfLoader.load(
+    "hum.gltf",
+    (gltf: any) => {
+      pastHumModel = gltf.scene
+      initialize();
     },
-    undefined,
+    (xhr: any) => {
+      progressBar.style.width = `${(xhr.loaded / xhr.total) * 100}%`;
+    },
     (error: any) => {
-      console.error("Error loading MTL file:", error);
+      console.error("Error loading OBJ file:", error);
     },
   );
 
