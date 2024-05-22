@@ -31,6 +31,7 @@
     },
     (xhr: any) => {
       progressBar.style.width = `${(xhr.loaded / xhr.total) * 100}%`;
+      console.log((xhr.loaded / xhr.total) * 100);
     },
     (error: any) => {
       console.error("Error loading OBJ file:", error);
