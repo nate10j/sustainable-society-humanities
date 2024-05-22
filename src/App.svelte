@@ -23,6 +23,8 @@
 
   dracoLoader.setDecoderConfig({ type: "js" });
 
+  gltfLoader.setDRACOLoader(dracoLoader);
+
   gltfLoader.load(
     "hum.gltf",
     (gltf: any) => {
