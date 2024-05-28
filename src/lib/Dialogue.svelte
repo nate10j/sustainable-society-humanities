@@ -24,10 +24,12 @@
     export type dialogue = {
         character: characters;
         content: string;
+        callback?:() => void;
     };
 
     export function playDialogue(dialogue: dialogue[]) {
         showDialogueContainer();
+        dialogueIndex = 0;
         dialogueList = dialogue;
         showNextDialogue();
     }
@@ -36,7 +38,13 @@
         if (dialogueIndex < dialogueList.length) {
             const character = dialogueList[dialogueIndex].character;
             const content = dialogueList[dialogueIndex].content;
+            const callback = dialogueList[dialogueIndex].callback;
+
             sayContent(character, content);
+
+            if (callback) {
+                callback();
+            }
         } else {
             hideDialogueContainer();
         }

@@ -9,6 +9,8 @@
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
+  let futureContainer: HTMLDivElement;
+  let futureInput: HTMLInputElement;
 
   const dracoLoader = new DRACOLoader();
   const gltfLoader = new GLTFLoader();
@@ -28,7 +30,7 @@
   gltfLoader.load(
     "hum.gltf",
     (gltf: any) => {
-      pastHumModel = gltf.scene
+      pastHumModel = gltf.scene;
       initialize();
     },
     (xhr: any) => {
@@ -44,6 +46,77 @@
     loadingScreen.style.display = "none";
     container.style.display = "flex";
 
+    playDialogue([
+      {
+        character: characters.Nathan,
+        content:
+          "Hello ladies and gentlemen! Hello ladies and gentlemen! Hello ladies and gentlemen!!!!!! ! ! ! !(Enter to continue)",
+      },
+      {
+        character: characters.Nathan,
+        content: "Our names are... Lets start with me, my name is Nathan!",
+      },
+      { character: characters.Lucas, content: "And my name is lucas" },
+      { character: characters.ChunYin, content: "And my name is ChunYin" },
+      { character: characters.Joshua, content: "I am Joshua" },
+      {
+        character: characters.Lucas,
+        content: "Anyway, we are sustainable penguins",
+      },
+      {
+        character: characters.Joshua,
+        content: `This is the research question “How does redesigning buildings in Hong Kong make them more sustainable?"`,
+      },
+      {
+        character: characters.Joshua,
+        content:
+          " Our research question was made because our topic was spatial, so we decided to make a building design for redesigning buil-",
+      },
+      { character: characters.ChunYin, content: "Lets stop that yapicuino" },
+      { character: characters.Joshua, content: "😡" },
+      { character: characters.Lucas, content: "..." },
+      { character: characters.Lucas, content: "Wait... Somethings wrong" },
+      { character: characters.Joshua, content: "What is it Lucas?" },
+      {
+        character: characters.Lucas,
+        content: "AHHH WHAT IS HAPPENING????",
+      },
+      {
+        character: characters.Nathan,
+        content: "We are going into the PAST!!!!",
+      },
+      {
+        character: characters.Nathan,
+        content: "...",
+        callback: () => {
+          scene.add(pastHumModel);
+        },
+      },
+      {
+        character: characters.ChunYin,
+        content:
+          "Oh! I think I remember this place! This is Kai Tak Area! Pan, drag, scroll to move camera",
+      },
+      {
+        character: characters.Joshua,
+        content:
+          "The main reason for unsustainable buildings is that most of the recent architecture is all made up of non-eco-friendly material with things like biodegradable materials. There are also things such as not enough green and water and air pollution. They do not use susta-",
+      },
+      { character: characters.Nathan, content: "ERMMM WHAT THE SIGMA/?" },
+      {
+        character: characters.Nathan,
+        content: "Thats enough, lets go to the future!",
+      },
+      {
+        character: characters.Lucas,
+        content: "TYPE FUTURE TO LOOK AT THE FUTURE!",
+        callback: () => {
+          console.log("FUTURE");
+          futureContainer.style.display = "flex";
+        },
+      },
+    ]);
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -52,7 +125,8 @@
       1000,
     );
 
-    scene.background = new THREE.Color("#011226");
+    // light blue background
+    scene.background = new THREE.Color("#87ceeb");
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -63,7 +137,6 @@
 
     pastHumModel.position.set(9, -5, 14);
     pastHumModel.scale.set(5, 5, 5);
-    scene.add(pastHumModel);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 5);
     scene.add(ambientLight);
@@ -78,21 +151,26 @@
     }
 
     animate();
+  }
 
-    playDialogue([
-      {
-        character: characters.Nathan,
-        content:
-          "Hello ladies and gentlemen! Hello ladies and gentlemen! Hello ladies and gentlemen!",
-      },
-      {
-        character: characters.Nathan,
-        content: "Our names are... Lets start with me, my name is Nathan!",
-      },
-      { character: characters.Lucas, content: "And my name is lucas" },
-      { character: characters.ChunYin, content: "And my name is ChunYin" },
-      { character: characters.Joshua, content: "I am Joshua" },
-    ]);
+  function goToFuture() {
+    if (futureInput.value.toLowerCase() === "future") {
+      futureContainer.style.display = "none";
+
+      console.log("FUTURE BALLS");
+      playDialogue([
+        { character: characters.Lucas, content: "Ummmm its not working", callback: () => {console.log("yea its not wroking")} },
+        {
+          character: characters.ChunYin,
+          content:
+            "yeah cause SOMEONE *COUGH COUGH* JOSHUA *COUGH COUGH* didn't share their VIDEO!",
+        },
+        {
+          character: characters.Nathan,
+          content: "Don't be mean guys, maybe we could show it seperately! For now, you can enjoy this nice portion of present hong kong!",
+        },
+      ]);
+    }
   }
 </script>
 
@@ -100,6 +178,19 @@
   <h1 class="loading-text">LOADING...</h1>
   <div class="progress-container">
     <div id="progress-bar" class="progress-bar" bind:this={progressBar}></div>
+  </div>
+</div>
+
+<div class="future-container" bind:this={futureContainer}>
+  <div class="future-input-container">
+    <form on:submit|preventDefault={goToFuture}>
+      <input
+        type="text"
+        class="future-input"
+        placeholder="FUTURE"
+        bind:this={futureInput}
+      />
+    </form>
   </div>
 </div>
 
@@ -120,6 +211,25 @@
     height: 100vh;
     background-color: #fff;
     color: #000;
+  }
+
+  .future-container {
+    position: fixed;
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .future-input-container {
+    position: fixed;
+  }
+
+  .future-input {
+    width: 300px;
+    height: 50px;
+    border: 1px solid #ddd;
   }
 
   .progress-container {
