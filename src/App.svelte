@@ -9,6 +9,7 @@
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
+  let futureContainer: HTMLDivElement;
   let futureInputContainer: HTMLDivElement;
   let futureInput: HTMLInputElement;
 
@@ -116,6 +117,7 @@
         callback: () => {
           console.log("FUTURE");
           futureInputContainer.style.display = "flex";
+          futureContainer.style.display = "flex";
         },
       },
     ]);
@@ -158,6 +160,7 @@
 
   function goToFuture() {
     if (futureInput.value.toLowerCase() === "future") {
+      futureContainer.style.display = "none";
       futureInputContainer.style.display = "none";
 
       console.log("FUTURE BALLS");
@@ -166,6 +169,7 @@
           character: characters.Lucas,
           content: "AHHHH WHAT IS THIS PLACE!!! WHY IS IT SO... HOT! 🥵",
           callback: () => {
+            futureContainer.style.display = "flex";
             futureBadVideo.style.display = "block";
           },
         },
@@ -219,7 +223,7 @@
   </div>
 </div>
 
-<div class="future-container">
+<div class="future-container" bind:this={futureContainer}>
   <div class="future-input-container" bind:this={futureInputContainer}>
     <form on:submit|preventDefault={goToFuture}>
       <input
@@ -235,8 +239,8 @@
     title="future-bad-video"
     class="future-bad-video"
     src="https://www.youtube.com/embed/TC1ZWXVyVlk"
-    width="80%"
-    height="80%"
+    width="100%"
+    height="100%"
     bind:this={futureBadVideo}
   ></iframe>
 
@@ -244,8 +248,8 @@
     title="future-good-video"
     class="future-good-video"
     src="https://www.youtube.com/embed/JSgpCpocmgI"
-    width="80%"
-    height="80%"
+    width="100%"
+    height="100%"
     bind:this={futureGoodVideo}
   ></iframe>
 </div>
@@ -271,7 +275,7 @@
 
   .future-container {
     position: fixed;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     width: 100%;
