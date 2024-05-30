@@ -9,8 +9,11 @@
   let loadingScreen: HTMLDivElement;
   let container: HTMLDivElement;
   let progressBar: HTMLDivElement;
-  let futureContainer: HTMLDivElement;
+  let futureInputContainer: HTMLDivElement;
   let futureInput: HTMLInputElement;
+
+  let futureBadVideo: HTMLIFrameElement;
+  let futureGoodVideo: HTMLIFrameElement;
 
   const dracoLoader = new DRACOLoader();
   const gltfLoader = new GLTFLoader();
@@ -83,7 +86,7 @@
       },
       {
         character: characters.Nathan,
-        content: "We are going into the PAST!!!!",
+        content: "We are going into the PAST!!!! 😱",
       },
       {
         character: characters.Nathan,
@@ -112,7 +115,7 @@
         content: "TYPE FUTURE TO LOOK AT THE FUTURE!",
         callback: () => {
           console.log("FUTURE");
-          futureContainer.style.display = "flex";
+          futureInputContainer.style.display = "flex";
         },
       },
     ]);
@@ -155,20 +158,55 @@
 
   function goToFuture() {
     if (futureInput.value.toLowerCase() === "future") {
-      futureContainer.style.display = "none";
+      futureInputContainer.style.display = "none";
 
       console.log("FUTURE BALLS");
       playDialogue([
-        { character: characters.Lucas, content: "Ummmm its not working", callback: () => {console.log("yea its not wroking")} },
         {
-          character: characters.ChunYin,
+          character: characters.Lucas,
+          content: "AHHHH WHAT IS THIS PLACE!!! WHY IS IT SO... HOT! 🥵",
+          callback: () => {
+            futureBadVideo.style.display = "block";
+          },
+        },
+        {
+          character: characters.Lucas,
+          content: "... is this really the future?",
+        },
+        {
+          character: characters.Joshua,
           content:
-            "yeah cause SOMEONE *COUGH COUGH* JOSHUA *COUGH COUGH* didn't share their VIDEO!",
+            "It looks like it. The air and water pollution is so bad!!!!! 😭",
+        },
+        {
+          character: characters.Lucas,
+          content: "...",
         },
         {
           character: characters.Nathan,
-          content: "Don't be mean guys, maybe we could show it seperately! For now, you can enjoy this nice portion of present hong kong!",
+          content: "Ohhh this is horrible! We have to do something!",
         },
+        {
+          character: characters.ChunYin,
+          content:
+            "I think I know what to do! We have change the timeline by going back to the past! ",
+        },
+        {
+          character: characters.ChunYin,
+          content: "Be right back!",
+        },
+        {
+          character: characters.ChunYin,
+          content: "IM BACK! I MADE BUILDINGS MORE SUSTAINABLE!",
+          callback: () => {
+            futureGoodVideo.style.display = "block";
+            futureBadVideo.style.display = "none";
+          },
+        },
+        {
+          character: characters.Nathan,
+          content: "WOAHHH! THE FUTURE IS SO SUSTAINABLE!",
+        }
       ]);
     }
   }
@@ -181,8 +219,8 @@
   </div>
 </div>
 
-<div class="future-container" bind:this={futureContainer}>
-  <div class="future-input-container">
+<div class="future-container">
+  <div class="future-input-container" bind:this={futureInputContainer}>
     <form on:submit|preventDefault={goToFuture}>
       <input
         type="text"
@@ -192,6 +230,24 @@
       />
     </form>
   </div>
+
+  <iframe
+    title="future-bad-video"
+    class="future-bad-video"
+    src="https://www.youtube.com/embed/TC1ZWXVyVlk"
+    width="80%"
+    height="80%"
+    bind:this={futureBadVideo}
+  ></iframe>
+
+  <iframe
+    title="future-good-video"
+    class="future-good-video"
+    src="https://www.youtube.com/embed/JSgpCpocmgI"
+    width="80%"
+    height="80%"
+    bind:this={futureGoodVideo}
+  ></iframe>
 </div>
 
 <div class="container" bind:this={container}>
@@ -215,7 +271,7 @@
 
   .future-container {
     position: fixed;
-    display: none; /* Initially hidden */
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -223,13 +279,21 @@
   }
 
   .future-input-container {
-    position: fixed;
+    display: none;
   }
 
   .future-input {
     width: 300px;
     height: 50px;
     border: 1px solid #ddd;
+  }
+
+  .future-bad-video {
+    display: none;
+  }
+
+  .future-good-video {
+    display: none;
   }
 
   .progress-container {

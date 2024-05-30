@@ -5,6 +5,7 @@
     import JoshuaImg from "../assets/JOSHUA.webp";
 
     import { characters } from ".";
+    import type { HTMLIframeAttributes } from "svelte/elements";
 
     let lucasImgElement: HTMLImageElement;
     let nathanImgElement: HTMLImageElement;
